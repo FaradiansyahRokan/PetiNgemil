@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_user');
             $table->unsignedBigInteger('id_product');
             $table->longText('text_review');
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('id_user')->references('id')->on('users');

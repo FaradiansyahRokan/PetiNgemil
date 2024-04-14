@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('list_size')->enum(['mini', 'big', '1/4kg', '1/2kg', '1kg']);
             $table->string('list_flavour')->enum(['chocolate', 'strawberry', 'vanilla', 'barbeque', 'pedas', 'original']);
             $table->string('list_menu')->enum(['pisang', 'makaroni', 'basreng', 'ususkrispi']);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

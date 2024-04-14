@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_user');
             $table->string('status_stock')->enum(['in stock', 'out of stock']);
             $table->bigInteger('price');
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('id_product')->references('id')->on('products');

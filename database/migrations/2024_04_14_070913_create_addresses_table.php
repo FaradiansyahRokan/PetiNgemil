@@ -13,13 +13,17 @@ return new class extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('id_user');
             $table->string('city');
             $table->string('province');
             $table->string('district');
             $table->string('sub-district');
             $table->string('detail', 150);
             $table->string('address_type');
+            $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('id_user')->references('id')->on('users');
         });
     }
 
