@@ -4,13 +4,15 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -18,9 +20,13 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
+        'phone_number',
+        'gender',
+        'birth_date',
     ];
 
     /**
@@ -42,4 +48,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function favorites(): HasMany
+    {
+        return $this->hasMany(Favorite::class, 'id_favorite', 'id');
+    }
+
+    public function carts(): HasMany
+    {
+        return $this->hasMany(Cart::class, 'id_cart', 'id');
+    }
+
+    public function addresses(): HasMany
+    {
+        return $this->hasMany(Address::class, 'id_address', 'id');
+    }
 }
