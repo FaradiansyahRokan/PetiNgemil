@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductGalleryRequest;
 use App\Models\ProductGallery;
+use App\Models\Products;
 use Illuminate\Http\Request;
 
 class ProductGalleryController extends Controller
@@ -26,9 +28,23 @@ class ProductGalleryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProductGalleryRequest $request, Products $product)
     {
-        //
+        $files = $request->file('files');
+
+        if($request->hasFile('files'))
+        {
+            foreach($files as $file){
+                $path = $file->store('gallery');
+
+                ProductGallery::create([
+                    'id_product' => $product->id,
+                    'url_image' => $path
+                ]);
+            }
+        }
+
+        return redirect()->route('', $product->id);
     }
 
     /**
@@ -60,6 +76,8 @@ class ProductGalleryController extends Controller
      */
     public function destroy(ProductGallery $productGallery)
     {
-        //
+        $productGallery->delete();
+
+        return redirect();
     }
 }
