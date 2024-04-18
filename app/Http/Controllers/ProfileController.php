@@ -6,6 +6,7 @@ use App\Http\Requests\ProfileRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -51,7 +52,7 @@ class ProfileController extends Controller
     public function edit(string $id)
     {
         if (Auth::check()) {
-            $data = User::where('id', $id)->first();
+            $data = User::where('id', $id)->get();
 
             return view();
         }
@@ -64,7 +65,7 @@ class ProfileController extends Controller
     {
         $data = User::where('id', $id)->first();
         $validated = $request->validated();
-
+    
         if (!empty($validated['password'])) {
             $data->update([
                 'first_name' => $validated['first_name'],
@@ -83,7 +84,14 @@ class ProfileController extends Controller
                 'birth_date' => $validated['birth_date'],
             ]);
         }
-
+    
+        if(!empty($request->file('image_profile'))) {
+            Storage::delete($data->image_profile);
+            $data->update([
+                'image_profile' => $request->file('image_profile')->store('image_profile'),
+            ]);
+        }
+        
         return redirect();
     }
 
