@@ -5,14 +5,14 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class ProfileRequest extends FormRequest
+class AddressRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return Auth::check();  
+        return Auth::check();
     }
 
     /**
@@ -23,9 +23,12 @@ class ProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => 'required',
-            'email' =>'email|unique|required',
-            'phone_number' => 'integer|max:15' 
+            'city' => 'required',
+            'province' => 'required',
+            'district' => 'required',
+            'sub-district' => 'required',
+            'address_type' => 'required',
+            'detail' => 'max:1000'
         ];
     }
 }
